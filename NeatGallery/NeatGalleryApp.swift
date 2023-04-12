@@ -11,7 +11,7 @@ import SwiftUI
 struct NeatGalleryApp: App {
   var body: some Scene {
     WindowGroup {
-      AlbumView()
+      AlbumsView()
     }
   }
 }

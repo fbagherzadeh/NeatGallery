@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AlbumViewViewModel: ObservableObject {
+class AlbumsViewViewModel: ObservableObject {
   @Published var albums: [AlbumModel] = []
 
   private let fileManager = FileManager.default

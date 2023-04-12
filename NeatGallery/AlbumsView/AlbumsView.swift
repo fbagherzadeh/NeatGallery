@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct AlbumView: View {
+struct AlbumsView: View {
   @State private var presentEnterNameAlert: Bool = false
   @State private var presentNameExistAlert: Bool = false
   @State private var isNavigationLinkActive = false
-  @ObservedObject private var viewModel: AlbumViewViewModel = .init()
+  @ObservedObject private var viewModel: AlbumsViewViewModel = .init()
 
   var body: some View {
     NavigationView {
@@ -39,7 +39,7 @@ struct AlbumView: View {
   }
 }
 
-private extension AlbumView {
+private extension AlbumsView {
   @ViewBuilder var contentView: some View {
     if viewModel.albums.isEmpty {
       noFolderView
@@ -99,6 +99,6 @@ private extension AlbumView {
 
 struct AlbumView_Previews: PreviewProvider {
   static var previews: some View {
-    AlbumView()
+    AlbumsView()
   }
 }
