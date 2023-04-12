@@ -10,6 +10,7 @@ import SwiftUI
 struct AlbumView: View {
   @State private var presentEnterNameAlert: Bool = false
   @State private var presentNameExistAlert: Bool = false
+  @State private var isNavigationLinkActive = false
   @ObservedObject private var viewModel: AlbumViewViewModel = .init()
 
   var body: some View {
@@ -65,10 +66,22 @@ private extension AlbumView {
     ScrollView {
       LazyVGrid(columns: columns, spacing: 60) {
         ForEach(viewModel.albums) { album in
-          AlbumTileView(albumName: album.name)
+          tileView(albumModel: album)
         }
       }
       .padding(.vertical)
+    }
+  }
+
+  @ViewBuilder func tileView(albumModel: AlbumModel) -> some View {
+    VStack {
+      AlbumTileView(albumName: albumModel.name)
+        .onTapGesture {
+          isNavigationLinkActive = true
+        }
+      NavigationLink("", isActive: $isNavigationLinkActive) {
+        Text("Test")
+      }
     }
   }
 
