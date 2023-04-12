@@ -10,7 +10,6 @@ import SwiftUI
 struct AlbumsView: View {
   @State private var presentEnterNameAlert: Bool = false
   @State private var presentNameExistAlert: Bool = false
-  @State private var selectedAlbum: AlbumModel?
   @StateObject private var viewModel: AlbumsViewViewModel = .init()
 
   var body: some View {
@@ -79,20 +78,20 @@ private extension AlbumsView {
         NavigationLink(
           isActive: Binding(
             get: {
-              selectedAlbum != nil
+              viewModel.selectedAlbum != nil
             },
             set: { isActive in
               if !isActive {
-                selectedAlbum = nil
+                viewModel.selectedAlbum = nil
               }
             }
           )
         ) {
-          AlbumDetailView(album: selectedAlbum)
+          AlbumDetailView(album: viewModel.selectedAlbum)
         } label: {}
       )
       .onTapGesture {
-        selectedAlbum = album
+        viewModel.selectedAlbum = album
       }
   }
 

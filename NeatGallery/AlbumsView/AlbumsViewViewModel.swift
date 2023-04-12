@@ -9,6 +9,7 @@ import Foundation
 
 class AlbumsViewViewModel: ObservableObject {
   @Published var albums: [AlbumModel] = []
+  @Published var selectedAlbum: AlbumModel?
 
   private let fileManager = FileManager.default
 

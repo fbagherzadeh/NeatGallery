@@ -14,7 +14,6 @@ struct AlbumDetailView: View {
     content
       .navigationViewStyle(.stack)
       .navigationBarTitleDisplayMode(.inline)
-
   }
 }
 
@@ -54,7 +53,6 @@ struct AlbumDetailView_Previews: PreviewProvider {
     NavigationView {
       AlbumDetailView(
         album: .init(name: "Adelaide", url: URL(string: "https://www.google.com")!))
-
     }
   }
 }
