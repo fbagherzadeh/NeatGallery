@@ -10,8 +10,8 @@ import SwiftUI
 struct AlbumsView: View {
   @State private var presentEnterNameAlert: Bool = false
   @State private var presentNameExistAlert: Bool = false
-  @State private var isNavigationLinkActive = false
-  @ObservedObject private var viewModel: AlbumsViewViewModel = .init()
+  @State private var selectedAlbum: AlbumModel?
+  @StateObject private var viewModel: AlbumsViewViewModel = .init()
 
   var body: some View {
     NavigationView {
@@ -65,24 +65,35 @@ private extension AlbumsView {
 
     ScrollView {
       LazyVGrid(columns: columns, spacing: 60) {
-        ForEach(viewModel.albums) { album in
-          tileView(albumModel: album)
+        ForEach(viewModel.albums, id: \.id) { album in
+          tileView(album)
         }
       }
       .padding(.vertical)
     }
   }
 
-  @ViewBuilder func tileView(albumModel: AlbumModel) -> some View {
-    VStack {
-      AlbumTileView(albumName: albumModel.name)
-        .onTapGesture {
-          isNavigationLinkActive = true
-        }
-      NavigationLink("", isActive: $isNavigationLinkActive) {
-        Text("Test")
+  func tileView(_ album: AlbumModel) -> some View {
+    AlbumTileView(albumName: album.name)
+      .background(
+        NavigationLink(
+          isActive: Binding(
+            get: {
+              selectedAlbum != nil
+            },
+            set: { isActive in
+              if !isActive {
+                selectedAlbum = nil
+              }
+            }
+          )
+        ) {
+          AlbumDetailView(album: selectedAlbum)
+        } label: {}
+      )
+      .onTapGesture {
+        selectedAlbum = album
       }
-    }
   }
 
   func didEnterNewAlbumName(_ albumName: String?) {
