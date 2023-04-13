@@ -8,10 +8,17 @@
 import SwiftUI
 
 struct AlbumDetailView: View {
-  let album: AlbumModel?
+  @StateObject var viewModel: AlbumDetailViewModel
+
+  init(album: AlbumModel?) {
+    _viewModel = StateObject(wrappedValue: AlbumDetailViewModel(album: album))
+  }
 
   var body: some View {
     content
+      .onAppear { viewModel.loadImages() }
+      .animation(.default, value: viewModel.status)
+      .navigationTitle(viewModel.title)
       .navigationViewStyle(.stack)
       .navigationBarTitleDisplayMode(.inline)
   }
@@ -19,19 +26,15 @@ struct AlbumDetailView: View {
 
 private extension AlbumDetailView {
   @ViewBuilder var content: some View {
-    if let album {
-      Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        .navigationTitle(album.name)
-        .toolbar {
-          ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-            } label: {
-              Image(systemName: "photo")
-            }
-          }
-        }
-    } else {
+    switch viewModel.status {
+    case .failed:
       failedView
+    case .empty:
+      noImageView
+    case .loading:
+      loadingView
+    case .loaded:
+      loadedView
     }
   }
 
@@ -44,6 +47,58 @@ private extension AlbumDetailView {
       Text("Failed to load selected album")
       Spacer()
       Spacer()
+    }
+  }
+
+  var noImageView: some View {
+    VStack {
+      Spacer()
+      Text("Start adding your first photos!")
+      Spacer()
+      Spacer()
+    }
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        Button {
+        } label: {
+          Image(systemName: "photo")
+        }
+      }
+    }
+  }
+
+  var loadingView: some View {
+    ProgressView()
+      .progressViewStyle(.circular)
+      .scaleEffect(1.5)
+  }
+
+  var loadedView: some View {
+    gridView
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button {
+          } label: {
+            Image(systemName: "photo")
+          }
+        }
+      }
+  }
+
+  @ViewBuilder var gridView: some View {
+    let columns = [
+      GridItem(.adaptive(minimum: 120)),
+      GridItem(.adaptive(minimum: 120)),
+      GridItem(.adaptive(minimum: 120)),
+    ]
+
+    ScrollView {
+      LazyVGrid(columns: columns) {
+        ForEach(viewModel.loadedImages, id: \.self) { image in
+          AlbumDetailImageTileView(image: image)
+        }
+      }
+      .padding(.vertical)
     }
   }
 }
