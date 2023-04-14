@@ -92,13 +92,21 @@ private extension AlbumDetailView {
       GridItem(.adaptive(minimum: 120)),
     ]
 
-    ScrollView {
-      LazyVGrid(columns: columns) {
-        ForEach(viewModel.loadedImages, id: \.self) { image in
-          AlbumDetailImageTileView(image: image)
+    VStack(spacing: .zero) {
+      ScrollView {
+        LazyVGrid(columns: columns) {
+          ForEach(viewModel.loadedImages, id: \.self) { image in
+            AlbumDetailImageTileView(image: image)
+          }
         }
+        .padding(.vertical)
       }
-      .padding(.vertical)
+      
+      BottomInfoView {
+        Text("\(viewModel.loadedImages.count) items")
+          .font(.caption)
+          .bold()
+      }
     }
   }
 }

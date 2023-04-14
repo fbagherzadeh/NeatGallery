@@ -80,23 +80,18 @@ private extension AlbumsView {
   }
 
   var bottomView: some View {
-    Text("")
-      .frame(maxWidth: .infinity)
-      .padding(.top)
-      .background(.secondary.opacity(0.3))
-      .overlay(alignment: .trailing) {
-        Button {
-          // TODO: show help tips
-        } label: {
-          Image(systemName: "info.circle")
-        }
-        .padding(.trailing)
+    BottomInfoView {
+      Text("\(viewModel.albums.count) items")
+        .font(.caption)
+        .bold()
+    } buttonInfoView: {
+      Button {
+        // TODO: show help tips
+      } label: {
+        Image(systemName: "info.circle")
       }
-      .overlay(alignment: .center) {
-        Text("\(viewModel.albums.count) items")
-          .font(.caption)
-          .bold()
-      }
+      .padding(.trailing)
+    }
   }
 
   func tileView(_ album: AlbumModel) -> some View {
