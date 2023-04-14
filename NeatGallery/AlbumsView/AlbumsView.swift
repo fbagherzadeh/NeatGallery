@@ -40,11 +40,15 @@ struct AlbumsView: View {
 
 private extension AlbumsView {
   @ViewBuilder var contentView: some View {
-    if viewModel.albums.isEmpty {
-      noFolderView
-    } else {
-      gridView
+    VStack {
+      switch viewModel.state {
+      case .empty:
+        noFolderView
+      case .hasAlbum:
+        gridView
+      }
     }
+    .animation(.easeInOut, value: viewModel.state)
   }
 
   var noFolderView: some View {
@@ -62,14 +66,37 @@ private extension AlbumsView {
       GridItem(.adaptive(minimum: 120))
     ]
 
-    ScrollView {
-      LazyVGrid(columns: columns, spacing: 60) {
-        ForEach(viewModel.albums, id: \.id) { album in
-          tileView(album)
+    VStack(spacing: .zero) {
+      ScrollView {
+        LazyVGrid(columns: columns, spacing: 50) {
+          ForEach(viewModel.albums, id: \.id) { album in
+            tileView(album)
+          }
         }
+        .padding(.vertical)
       }
-      .padding(.vertical)
+      bottomView
     }
+  }
+
+  var bottomView: some View {
+    Text("")
+      .frame(maxWidth: .infinity)
+      .padding(.top)
+      .background(.secondary.opacity(0.3))
+      .overlay(alignment: .trailing) {
+        Button {
+          // TODO: show help tips
+        } label: {
+          Image(systemName: "info.circle")
+        }
+        .padding(.trailing)
+      }
+      .overlay(alignment: .center) {
+        Text("\(viewModel.albums.count) items")
+          .font(.caption)
+          .bold()
+      }
   }
 
   func tileView(_ album: AlbumModel) -> some View {

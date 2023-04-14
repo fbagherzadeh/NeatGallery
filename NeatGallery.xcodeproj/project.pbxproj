@@ -27,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A77AF1F29E904B900A1FB91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0AB03CCE29D94D6F0095D94F /* TileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileImageView.swift; sourceTree = "<group>"; };
 		0ABEE31229E3AD03000F9767 /* AlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsView.swift; sourceTree = "<group>"; };
 		0AC9B00829E3EB09001D429E /* AlertWithTextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWithTextFieldModifier.swift; sourceTree = "<group>"; };
@@ -116,6 +117,7 @@
 		0AD8638B29D9307F003FAEFC /* NeatGallery */ = {
 			isa = PBXGroup;
 			children = (
+				0A77AF1F29E904B900A1FB91 /* Info.plist */,
 				0AC9B01C29E6425C001D429E /* AlbumDetailView */,
 				0AC9B01129E51AAF001D429E /* Extensions */,
 				0AC9B00A29E4F074001D429E /* AlbumsView */,
@@ -354,6 +356,8 @@
 				DEVELOPMENT_TEAM = BZKT4P98QZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NeatGallery/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires to access your Photo Library pictures ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -385,6 +389,8 @@
 				DEVELOPMENT_TEAM = BZKT4P98QZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NeatGallery/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires to access your Photo Library pictures ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -7,14 +7,22 @@
 
 import Foundation
 
+enum AlbumsViewState {
+  case empty, hasAlbum
+}
+
 class AlbumsViewViewModel: ObservableObject {
   @Published var albums: [AlbumModel] = []
   @Published var selectedAlbum: AlbumModel?
+  @Published var state: AlbumsViewState = .empty
 
   private let fileManager = FileManager.default
 
   init() {
     loadAlbums()
+    $albums
+      .compactMap { $0.count > 0 ? AlbumsViewState.hasAlbum : .empty }
+      .assign(to: &$state)
   }
 
   func albumExists(name: String) -> Bool {

@@ -14,7 +14,7 @@ struct AlbumDetailImageTileView: View {
     Image(uiImage: image)
       .resizable()
       .aspectRatio(contentMode: .fit)
-      .frame(width: 120, height: 80)
+      .frame(width: 120, height: 67.50)
       .background(
         Image(uiImage: image)
           .resizable()
