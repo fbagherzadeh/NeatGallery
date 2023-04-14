@@ -97,11 +97,14 @@ private extension AlbumDetailView {
         LazyVGrid(columns: columns) {
           ForEach(viewModel.loadedImages, id: \.self) { image in
             AlbumDetailImageTileView(image: image)
+              .onTapGesture {
+                // TODO: open full screen image view
+              }
           }
         }
         .padding(.vertical)
       }
-      
+
       BottomInfoView {
         Text("\(viewModel.loadedImages.count) items")
           .font(.caption)

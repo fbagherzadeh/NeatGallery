@@ -13,7 +13,7 @@ struct BottomInfoView<TextInfoView: View, ButtonInfoView: View>: View {
 
   init(
     @ViewBuilder textInfoView: () -> TextInfoView,
-    @ViewBuilder buttonInfoView: (() -> ButtonInfoView) = { EmptyView() }
+    @ViewBuilder buttonInfoView: () -> ButtonInfoView = { EmptyView() }
   ) {
     self.textInfoView = textInfoView()
     self.buttonInfoView = buttonInfoView()
