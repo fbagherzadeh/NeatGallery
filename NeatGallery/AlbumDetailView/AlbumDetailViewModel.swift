@@ -7,13 +7,19 @@
 
 import UIKit
 
-enum AlbumDetailViewStatus {
-  case empty, loading, loaded, failed
+enum AlbumDetailViewStatus: Equatable {
+  case empty
+  case loading
+  case loaded
+  case failed
 }
 
 class AlbumDetailViewModel: ObservableObject {
-  @Published var status: AlbumDetailViewStatus = .empty
-  var loadedImages: [UIImage] = []
+  @Published var state: AlbumDetailViewStatus = .empty
+  var imageURLs: [URL] = []
+  var isAddMorePhotoDisabled: Bool {
+    return state == .failed
+  }
 
   private let album: AlbumModel?
   private let fileManager = FileManager.default
@@ -25,13 +31,13 @@ class AlbumDetailViewModel: ObservableObject {
   init(album: AlbumModel?) {
     self.album = album
     if album == nil {
-      status = .failed
+      state = .failed
     }
   }
 
-  func loadImages() {
-    status = .loading
-    loadedImages = fileManager.getUIImagesInDirectory(album: title)
-    status = loadedImages.isEmpty ? .empty : .loaded
+  func loadImageURLs() {
+    state = .loading
+    imageURLs = fileManager.getImageURLsInDirectory(album: title)
+    state = imageURLs.isEmpty ? .empty : .loaded
   }
 }

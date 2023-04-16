@@ -80,11 +80,11 @@ private extension AlbumsView {
   }
 
   var bottomView: some View {
-    BottomInfoView {
+    FooterView {
       Text("\(viewModel.albums.count) items")
         .font(.caption)
         .bold()
-    } buttonInfoView: {
+    } trailingButtonInfoView: {
       Button {
         // TODO: show help tips
       } label: {

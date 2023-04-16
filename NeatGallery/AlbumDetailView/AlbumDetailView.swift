@@ -16,17 +16,26 @@ struct AlbumDetailView: View {
 
   var body: some View {
     content
-      .onAppear { viewModel.loadImages() }
-      .animation(.default, value: viewModel.status)
+      .onAppear { viewModel.loadImageURLs() }
+      .animation(.default, value: viewModel.state)
       .navigationTitle(viewModel.title)
       .navigationViewStyle(.stack)
       .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button {
+          } label: {
+            Image(systemName: "photo")
+          }
+          .disabled(viewModel.isAddMorePhotoDisabled)
+        }
+      }
   }
 }
 
 private extension AlbumDetailView {
   @ViewBuilder var content: some View {
-    switch viewModel.status {
+    switch viewModel.state {
     case .failed:
       failedView
     case .empty:
@@ -34,7 +43,7 @@ private extension AlbumDetailView {
     case .loading:
       loadingView
     case .loaded:
-      loadedView
+      gridView
     }
   }
 
@@ -57,32 +66,12 @@ private extension AlbumDetailView {
       Spacer()
       Spacer()
     }
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        Button {
-        } label: {
-          Image(systemName: "photo")
-        }
-      }
-    }
   }
 
   var loadingView: some View {
     ProgressView()
       .progressViewStyle(.circular)
       .scaleEffect(1.5)
-  }
-
-  var loadedView: some View {
-    gridView
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          Button {
-          } label: {
-            Image(systemName: "photo")
-          }
-        }
-      }
   }
 
   @ViewBuilder var gridView: some View {
@@ -95,8 +84,8 @@ private extension AlbumDetailView {
     VStack(spacing: .zero) {
       ScrollView {
         LazyVGrid(columns: columns) {
-          ForEach(viewModel.loadedImages, id: \.self) { image in
-            AlbumDetailImageTileView(image: image)
+          ForEach(viewModel.imageURLs, id: \.self) { url in
+            AlbumDetailImageTileView(imageURL: url)
               .onTapGesture {
                 // TODO: open full screen image view
               }
@@ -105,8 +94,8 @@ private extension AlbumDetailView {
         .padding(.vertical)
       }
 
-      BottomInfoView {
-        Text("\(viewModel.loadedImages.count) items")
+      FooterView {
+        Text("\(viewModel.imageURLs.count) items")
           .font(.caption)
           .bold()
       }
