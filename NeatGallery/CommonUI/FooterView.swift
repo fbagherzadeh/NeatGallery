@@ -12,6 +12,12 @@ struct FooterView<TextView: View, TrailingButtonInfoView: View, LeadingButtonInf
   let trailingButtonView: TrailingButtonInfoView
   let leadingButtonView: LeadingButtonInfoView
 
+  private var backgroundColor: UIColor {
+    UIColor { trait -> UIColor in
+      trait.userInterfaceStyle == .dark ? UIColor.black : UIColor.white
+    }
+  }
+
   init(
     @ViewBuilder textView: () -> TextView,
     @ViewBuilder leadingButtonInfoView: () -> LeadingButtonInfoView = { EmptyView() },
@@ -23,18 +29,27 @@ struct FooterView<TextView: View, TrailingButtonInfoView: View, LeadingButtonInf
   }
 
   var body: some View {
-    Text("")
-      .frame(maxWidth: .infinity)
-      .padding(.top)
-      .background(.secondary.opacity(0.3))
-      .overlay(alignment: .leading) {
-        leadingButtonView
-      }
-      .overlay(alignment: .trailing) {
-        trailingButtonView
-      }
-      .overlay(alignment: .center) {
-       textView
-      }
+    VStack {
+      Spacer()
+
+      RoundedRectangle(cornerRadius: 10)
+        .background(Color(uiColor: backgroundColor))
+        .foregroundColor(.secondary.opacity(0.3))
+        .frame(maxWidth: .infinity)
+        .ignoresSafeArea(.all, edges: .bottom)
+        .frame(height: 30)
+        .overlay(alignment: .leading) {
+          leadingButtonView
+            .padding(.top)
+        }
+        .overlay(alignment: .trailing) {
+          trailingButtonView
+            .padding(.top)
+        }
+        .overlay(alignment: .center) {
+         textView
+            .padding(.top)
+        }
+    }
   }
 }

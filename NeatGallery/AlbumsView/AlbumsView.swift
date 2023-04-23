@@ -66,15 +66,16 @@ private extension AlbumsView {
       GridItem(.adaptive(minimum: 120))
     ]
 
-    VStack(spacing: .zero) {
-      ScrollView {
-        LazyVGrid(columns: columns, spacing: 50) {
-          ForEach(viewModel.albums, id: \.id) { album in
-            tileView(album)
-          }
+    ScrollView {
+      LazyVGrid(columns: columns, spacing: 50) {
+        ForEach(viewModel.albums, id: \.id) { album in
+          tileView(album)
         }
-        .padding(.vertical)
       }
+      .padding(.vertical)
+    }
+    .padding(.bottom, 30)
+    .overlay(alignment: .bottom) {
       bottomView
     }
   }

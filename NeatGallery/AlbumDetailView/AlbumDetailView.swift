@@ -19,19 +19,9 @@ struct AlbumDetailView: View {
       .task {
         await viewModel.loadImages()
       }
-      .animation(.default, value: viewModel.state)
       .navigationTitle(viewModel.title)
       .navigationViewStyle(.stack)
       .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          Button {
-          } label: {
-            Image(systemName: "photo")
-          }
-          .disabled(viewModel.isAddMorePhotoDisabled)
-        }
-      }
   }
 }
 
@@ -68,6 +58,14 @@ private extension AlbumDetailView {
       Spacer()
       Spacer()
     }
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        Button {
+        } label: {
+          Image(systemName: "photo")
+        }
+      }
+    }
   }
 
   var loadingView: some View {
@@ -83,23 +81,31 @@ private extension AlbumDetailView {
       GridItem(.adaptive(minimum: 120)),
     ]
 
-    VStack(spacing: .zero) {
-      ScrollView {
-        LazyVGrid(columns: columns) {
-          ForEach(viewModel.images, id: \.self) { image in
-            AlbumDetailImageTileView(image: image)
-              .onTapGesture {
-                // TODO: open full screen image view
-              }
-          }
+    ScrollView {
+      LazyVGrid(columns: columns) {
+        ForEach(viewModel.images, id: \.id) { imageModel in
+          AlbumDetailImageTileView(image: imageModel.resizedImage)
+            .onTapGesture {
+              // TODO: open full screen image view
+            }
         }
-        .padding(.vertical)
       }
-
+      .padding(.vertical)
+    }
+    .padding(.bottom, 30)
+    .overlay(alignment: .bottom) {
       FooterView {
         Text("\(viewModel.images.count) items")
           .font(.caption)
           .bold()
+      }
+    }
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        Button {
+        } label: {
+          Image(systemName: "photo")
+        }
       }
     }
   }
