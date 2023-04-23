@@ -16,7 +16,9 @@ struct AlbumDetailView: View {
 
   var body: some View {
     content
-      .onAppear { viewModel.loadImageURLs() }
+      .task {
+        await viewModel.loadImages()
+      }
       .animation(.default, value: viewModel.state)
       .navigationTitle(viewModel.title)
       .navigationViewStyle(.stack)
@@ -84,8 +86,8 @@ private extension AlbumDetailView {
     VStack(spacing: .zero) {
       ScrollView {
         LazyVGrid(columns: columns) {
-          ForEach(viewModel.imageURLs, id: \.self) { url in
-            AlbumDetailImageTileView(imageURL: url)
+          ForEach(viewModel.images, id: \.self) { image in
+            AlbumDetailImageTileView(image: image)
               .onTapGesture {
                 // TODO: open full screen image view
               }
@@ -95,7 +97,7 @@ private extension AlbumDetailView {
       }
 
       FooterView {
-        Text("\(viewModel.imageURLs.count) items")
+        Text("\(viewModel.images.count) items")
           .font(.caption)
           .bold()
       }

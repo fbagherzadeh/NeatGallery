@@ -16,13 +16,14 @@ enum AlbumDetailViewStatus: Equatable {
 
 class AlbumDetailViewModel: ObservableObject {
   @Published var state: AlbumDetailViewStatus = .empty
-  var imageURLs: [URL] = []
+  var images: [UIImage] = []
   var isAddMorePhotoDisabled: Bool {
     return state == .failed
   }
 
   private let album: AlbumModel?
   private let fileManager = FileManager.default
+  private let tileWidth: CGFloat = 120
 
   var title: String {
     album?.name ?? ""
@@ -35,9 +36,23 @@ class AlbumDetailViewModel: ObservableObject {
     }
   }
 
-  func loadImageURLs() {
+  @MainActor
+  func loadImages() async {
     state = .loading
-    imageURLs = fileManager.getImageURLsInDirectory(album: title)
-    state = imageURLs.isEmpty ? .empty : .loaded
+    images = await loadResizedImages()
+    state = images.isEmpty ? .empty : .loaded
+  }
+
+
+  private func loadResizedImages() async -> [UIImage] {
+    let urls: [URL] = fileManager.getImageURLsInDirectory(album: title)
+    let scale: CGFloat = await UIScreen.main.scale
+    var resizedImages: [UIImage] = []
+    for url in urls {
+      if let image = UIImage(contentsOfFile: url.path)?.resizeWithScaleAspectFitMode(to: tileWidth * scale) {
+        resizedImages.append(image)
+      }
+    }
+    return resizedImages
   }
 }
