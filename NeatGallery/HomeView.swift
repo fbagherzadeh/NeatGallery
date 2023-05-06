@@ -128,7 +128,7 @@ struct HomeView: View {
       }
     }
     .sheet(isPresented: $showSheet) {
-      ImagePicker(pickedResults: $viewModel.pickerResults)
+//      ImagePicker(pickedResults: $viewModel.pickerResults)
     }
   }
 

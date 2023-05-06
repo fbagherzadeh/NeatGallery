@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Photos
 
 struct AlbumDetailView: View {
-  @StateObject var viewModel: AlbumDetailViewModel
+  @StateObject private var viewModel: AlbumDetailViewModel
+  @State private var shouldShowDeniedPhotoAccessAlert: Bool = false
+  @State private var shouldShowImagePickerSheet: Bool = false
 
   init(album: AlbumModel?) {
     _viewModel = StateObject(wrappedValue: AlbumDetailViewModel(album: album))
@@ -22,6 +25,32 @@ struct AlbumDetailView: View {
       .navigationTitle(viewModel.title)
       .navigationViewStyle(.stack)
       .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button {
+            requestPhotoLibraryAccess()
+          } label: {
+            Image(systemName: "photo")
+          }
+          .disabled(viewModel.shouldDisableAddNewPhotos)
+        }
+      }
+      .alert(
+        "Photo Library access denied or restricted",
+        isPresented: $shouldShowDeniedPhotoAccessAlert
+      ) {
+        Button("Cancel") {}
+        Button {
+          openAppSetting()
+        } label: {
+          Text("Settings")
+        }
+      } message: {
+        Text("To add photos to your album, please allow Photos access in the settings")
+      }
+      .sheet(isPresented: $shouldShowImagePickerSheet) {
+        ImagePicker(didFinishPickingMedia: viewModel.addPickedImages(from:))
+      }
   }
 }
 
@@ -58,14 +87,6 @@ private extension AlbumDetailView {
       Spacer()
       Spacer()
     }
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        Button {
-        } label: {
-          Image(systemName: "photo")
-        }
-      }
-    }
   }
 
   var loadingView: some View {
@@ -100,14 +121,18 @@ private extension AlbumDetailView {
           .bold()
       }
     }
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        Button {
-        } label: {
-          Image(systemName: "photo")
-        }
-      }
+  }
+
+  func requestPhotoLibraryAccess() {
+    PHPhotoLibrary.requestAuthorization { status in
+      shouldShowDeniedPhotoAccessAlert = status == .denied || status == .restricted
+      shouldShowImagePickerSheet = !shouldShowDeniedPhotoAccessAlert
     }
+  }
+
+  private func openAppSetting() {
+    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 }
 

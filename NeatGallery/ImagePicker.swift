@@ -10,8 +10,7 @@ import PhotosUI
 
 struct ImagePicker: UIViewControllerRepresentable {
   @Environment(\.presentationMode) private var presentationMode
-//  let didFinishPickingMedia: ([PHPickerResult]) -> Void
-  @Binding var pickedResults: [PHPickerResult]
+  let didFinishPickingMedia: ([PHPickerResult]) -> Void
 
   func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> PHPickerViewController {
     var config = PHPickerConfiguration()
@@ -37,8 +36,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-//      parent.didFinishPickingMedia(results)
-      parent.pickedResults = results
+      parent.didFinishPickingMedia(results)
       parent.presentationMode.wrappedValue.dismiss()
 
 //      let group = DispatchGroup()

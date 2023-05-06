@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 enum AlbumDetailViewStatus: Equatable {
   case empty
@@ -17,6 +18,9 @@ enum AlbumDetailViewStatus: Equatable {
 class AlbumDetailViewModel: ObservableObject {
   @Published var state: AlbumDetailViewStatus = .empty
   var images: [ImageModel] = []
+  var shouldDisableAddNewPhotos: Bool {
+    state == .loading || state == .failed
+  }
 
   private let album: AlbumModel?
   private let fileManager = FileManager.default
@@ -40,6 +44,9 @@ class AlbumDetailViewModel: ObservableObject {
     state = images.isEmpty ? .empty : .loaded
   }
 
+  func addPickedImages(from pickerResults: [PHPickerResult]) {
+    print("Convert \(pickerResults.count) results to ImageModel, add to images array and save to the file")
+  }
 
   private func loadResizedImages() async -> [ImageModel] {
     let urls: [URL] = fileManager.getImageURLsInDirectory(album: title)
