@@ -116,11 +116,12 @@ private extension AlbumDetailView {
     .padding(.bottom, 30)
     .overlay(alignment: .bottom) {
       FooterView {
-        Text("\(viewModel.images.count) items")
+        Text(viewModel.footerTitle)
           .font(.caption)
           .bold()
       }
     }
+    .overlay(viewModel.isAddingNewImages ? loadingView : nil)
   }
 
   func requestPhotoLibraryAccess() {
