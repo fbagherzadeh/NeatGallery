@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AlbumModel: Identifiable {
+struct AlbumModel: Identifiable, Hashable {
   let id: String = UUID().uuidString
   let name: String
   let url: URL

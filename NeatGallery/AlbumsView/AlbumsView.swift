@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct AlbumsView: View {
+  @StateObject private var viewModel: AlbumsViewViewModel = .init()
+  @State private var routes: [Route] = []
   @State private var presentEnterNameAlert: Bool = false
   @State private var presentNameExistAlert: Bool = false
-  @StateObject private var viewModel: AlbumsViewViewModel = .init()
+
 
   var body: some View {
-    NavigationView {
+    NavigationStack(path: $routes) {
       contentView
         .alert("", isPresented: $presentNameExistAlert, actions: {
           Button("Ok", role: .cancel) {}
@@ -32,6 +34,12 @@ struct AlbumsView: View {
             } label: {
               Image(systemName: "folder.badge.plus")
             }
+          }
+        }
+        .navigationDestination(for: Route.self) { route in
+          switch route {
+          case .AlbumDetailView(let album):
+            AlbumDetailView(album: album)
           }
         }
     }
@@ -97,24 +105,8 @@ private extension AlbumsView {
 
   func tileView(_ album: AlbumModel) -> some View {
     AlbumTileView(albumName: album.name)
-      .background(
-        NavigationLink(
-          isActive: Binding(
-            get: {
-              viewModel.selectedAlbum != nil
-            },
-            set: { isActive in
-              if !isActive {
-                viewModel.selectedAlbum = nil
-              }
-            }
-          )
-        ) {
-          AlbumDetailView(album: viewModel.selectedAlbum)
-        } label: {}
-      )
       .onTapGesture {
-        viewModel.selectedAlbum = album
+        routes.append(.AlbumDetailView(album))
       }
   }
 

@@ -30,7 +30,7 @@ struct AlbumDetailView: View {
           Button {
             requestPhotoLibraryAccess()
           } label: {
-            Image(systemName: "photo")
+            Image(systemName: "photo.badge.plus")
           }
           .disabled(viewModel.shouldDisableAddNewPhotos)
         }
