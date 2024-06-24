@@ -12,6 +12,8 @@ struct AlbumDetailView: View {
   @StateObject private var viewModel: AlbumDetailViewModel
   @State private var shouldShowDeniedPhotoAccessAlert: Bool = false
   @State private var shouldShowImagePickerSheet: Bool = false
+  @State private var showFullScreenImageView: Bool = false
+  @State private var currentIndex: Int = 0
 
   init(album: AlbumModel?) {
     _viewModel = StateObject(wrappedValue: AlbumDetailViewModel(album: album))
@@ -104,10 +106,12 @@ private extension AlbumDetailView {
 
     ScrollView {
       LazyVGrid(columns: columns) {
-        ForEach(viewModel.images, id: \.id) { imageModel in
+        ForEach(viewModel.images.indices, id: \.self) { index in
+          let imageModel = viewModel.images[index]
           AlbumDetailImageTileView(image: imageModel.resizedImage)
             .onTapGesture {
-              // TODO: open full screen image view
+              currentIndex = index
+              showFullScreenImageView = true
             }
         }
       }
@@ -122,6 +126,13 @@ private extension AlbumDetailView {
       }
     }
     .overlay(viewModel.isAddingNewImages ? loadingView : nil)
+    .fullScreenCover(isPresented: $showFullScreenImageView) {
+      FullScreenImageView(
+        items: viewModel.images,
+        currentIndex: $currentIndex,
+        dismissAction: { showFullScreenImageView = false }
+      )
+    }
   }
 
   func requestPhotoLibraryAccess() {

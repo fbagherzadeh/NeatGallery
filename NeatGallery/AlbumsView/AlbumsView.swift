@@ -38,7 +38,7 @@ struct AlbumsView: View {
         }
         .navigationDestination(for: Route.self) { route in
           switch route {
-          case .AlbumDetailView(let album):
+          case .albumDetailView(let album):
             AlbumDetailView(album: album)
           }
         }
@@ -106,7 +106,7 @@ private extension AlbumsView {
   func tileView(_ album: AlbumModel) -> some View {
     AlbumTileView(albumName: album.name)
       .onTapGesture {
-        routes.append(.AlbumDetailView(album))
+        routes.append(.albumDetailView(album))
       }
   }
 

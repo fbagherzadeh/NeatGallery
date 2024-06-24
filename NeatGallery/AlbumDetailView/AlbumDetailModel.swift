@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct ImageModel: Identifiable {
+struct ImageModel: Identifiable, Hashable {
   let id: String
   let resizedImage: UIImage
   let imageUrl: URL
