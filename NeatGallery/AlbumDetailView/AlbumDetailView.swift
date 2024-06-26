@@ -21,9 +21,7 @@ struct AlbumDetailView: View {
 
   var body: some View {
     content
-      .task {
-        await viewModel.loadImages()
-      }
+      .onAppear { viewModel.loadImages() }
       .navigationTitle(viewModel.title)
       .navigationViewStyle(.stack)
       .navigationBarTitleDisplayMode(.inline)

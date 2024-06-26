@@ -11,10 +11,16 @@ struct ImageModel: Identifiable, Hashable {
   let id: String
   let resizedImage: UIImage
   let imageUrl: URL
+  let assetIdentifier: String?
 
-  init(resizedImage: UIImage, imageUrl: URL) {
+  init(
+    resizedImage: UIImage,
+    imageUrl: URL,
+    assetIdentifier: String? = nil
+  ) {
     self.id = UUID().uuidString
     self.resizedImage = resizedImage
     self.imageUrl = imageUrl
+    self.assetIdentifier = assetIdentifier
   }
 }

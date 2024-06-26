@@ -30,6 +30,7 @@ class AlbumDetailViewModel: ObservableObject {
   private let album: AlbumModel?
   private let fileManager = FileManager.default
   private let tileWidth: CGFloat = 120
+  private let scale: CGFloat = UIScreen.main.scale
 
   var title: String {
     album?.name ?? ""
@@ -42,11 +43,14 @@ class AlbumDetailViewModel: ObservableObject {
     }
   }
 
-  @MainActor
-  func loadImages() async {
+  func loadImages() {
     state = .loading
-    images = await loadResizedImages()
-    state = images.isEmpty ? .empty : .loaded
+    Task {
+      images = await loadResizedImages()
+      await MainActor.run {
+        state = images.isEmpty ? .empty : .loaded
+      }
+    }
   }
 
   func addPickedImages(from pickerResults: [PHPickerResult]) {
@@ -55,9 +59,11 @@ class AlbumDetailViewModel: ObservableObject {
       do {
         let newImageModels: [ImageModel] = try await convertToUIImageWithTaskGroup(results: pickerResults)
         newImageModels.forEach { saveImageAsJPEGToDocumentDirectory(model: $0) }
+        deletePhotos(with: newImageModels.compactMap { $0.assetIdentifier })
         images.insert(contentsOf: newImageModels, at: 0)
-        DispatchQueue.main.async { [weak self] in
-          self?.isAddingNewImages = false
+        await MainActor.run {
+          state = images.isEmpty ? .empty : .loaded
+          isAddingNewImages = false
         }
       } catch {
         // TODO: Error handling
@@ -68,19 +74,30 @@ class AlbumDetailViewModel: ObservableObject {
 
   private func loadResizedImages() async -> [ImageModel] {
     let urls: [URL] = fileManager.getImageURLsInDirectory(album: title)
-    let scale: CGFloat = await UIScreen.main.scale
     var resizedImages: [ImageModel] = []
-    for url in urls {
-      if let image = UIImage(contentsOfFile: url.path)?.resizeWithScaleAspectFitMode(to: tileWidth * scale) {
-        resizedImages.append(.init(resizedImage: image, imageUrl: url))
+
+    await withTaskGroup(of: ImageModel?.self) { group in
+      for url in urls {
+        group.addTask { [weak self] in
+          guard let self,
+                let image = UIImage(contentsOfFile: url.path)?.resizeWithScaleAspectFitMode(to: self.tileWidth * scale) else { return nil }
+          return ImageModel(resizedImage: image, imageUrl: url)
+        }
+      }
+
+      for await result in group {
+        if let imageModel = result {
+          resizedImages.append(imageModel)
+        }
       }
     }
+
     return resizedImages
   }
 
   private func convertToUIImageWithTaskGroup(results: [PHPickerResult]) async throws -> [ImageModel] {
     guard let album else { return [] }
-    return try await withThrowingTaskGroup(of: (UIImage, String)?.self) { group in
+    return try await withThrowingTaskGroup(of: (image: UIImage, imageName: String, assetIdentifier: String?)?.self) { group in
       var newImageModels: [ImageModel] = []
       newImageModels.reserveCapacity(results.count)
 
@@ -93,8 +110,9 @@ class AlbumDetailViewModel: ObservableObject {
       for try await loadedImage in group {
         if let loadedImage = loadedImage {
           let imageModel: ImageModel = .init(
-            resizedImage: loadedImage.0,
-            imageUrl: album.url.appendingPathComponent(loadedImage.1)
+            resizedImage: loadedImage.image,
+            imageUrl: album.url.appendingPathComponent(loadedImage.imageName), 
+            assetIdentifier: loadedImage.assetIdentifier
           )
           newImageModels.append(imageModel)
         }
@@ -104,7 +122,7 @@ class AlbumDetailViewModel: ObservableObject {
     }
   }
 
-  private func convertToImage(result: PHPickerResult) async throws -> (UIImage, String) {
+  private func convertToImage(result: PHPickerResult) async throws -> (image: UIImage, imageName: String, assetIdentifier: String?) {
     return try await withCheckedThrowingContinuation { continuation in
       if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
         result.itemProvider.loadObject(ofClass: UIImage.self) { image, _ in
@@ -113,7 +131,7 @@ class AlbumDetailViewModel: ObservableObject {
             return
           }
           let imageName: String = result.itemProvider.suggestedName ?? "IMAGE_\(Date())"
-          continuation.resume(returning: (image, imageName))
+          continuation.resume(returning: (image, imageName, result.assetIdentifier))
         }
       } else {
         continuation.resume(throwing: PHPickerError.notSupportedType)
@@ -121,14 +139,16 @@ class AlbumDetailViewModel: ObservableObject {
     }
   }
 
-  func saveImageAsJPEGToDocumentDirectory(model: ImageModel) {
+  private func saveImageAsJPEGToDocumentDirectory(model: ImageModel) {
     guard let album,
           let data = model.resizedImage.jpegData(compressionQuality: 1.0) else {
       print("Failed to convert image to data.")
       return
     }
 
-    let fileURL = album.url.appendingPathComponent(model.id).appendingPathExtension("jpeg")
+    let fileURL = album.url
+      .appendingPathComponent(model.id)
+      .appendingPathExtension("jpeg")
 
     do {
       try data.write(to: fileURL)
@@ -136,5 +156,21 @@ class AlbumDetailViewModel: ObservableObject {
     } catch {
       print("Failed to save image as JPEG: \(error)")
     }
+  }
+
+  private func deletePhotos(with localIdentifiers: [String]) {
+      // Fetch the assets for the provided local identifiers
+      let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
+
+      // Create an array to hold the assets to delete
+      var assetsToDelete: [PHAsset] = []
+      fetchResult.enumerateObjects { (asset, _, _) in
+          assetsToDelete.append(asset)
+      }
+
+      // Perform the deletion
+    PHPhotoLibrary.shared().performChanges({
+      PHAssetChangeRequest.deleteAssets(assetsToDelete as NSArray)
+    })
   }
 }

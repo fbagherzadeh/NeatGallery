@@ -13,7 +13,8 @@ struct ImagePicker: UIViewControllerRepresentable {
   let didFinishPickingMedia: ([PHPickerResult]) -> Void
 
   func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> PHPickerViewController {
-    var config = PHPickerConfiguration()
+    let photoLibrary = PHPhotoLibrary.shared()
+    var config = PHPickerConfiguration(photoLibrary: photoLibrary)
     config.selectionLimit = 0
 
     let pickerViewController = PHPickerViewController(configuration: config)
@@ -38,29 +39,6 @@ struct ImagePicker: UIViewControllerRepresentable {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
       parent.didFinishPickingMedia(results)
       parent.presentationMode.wrappedValue.dismiss()
-
-//      let group = DispatchGroup()
-//      print(results.count)
-//
-//      for result in results {
-//        group.enter()
-//        if result.itemProvider.canLoadObject(ofClass: UIImage.self ) {
-//          result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
-//            if let image = image as? UIImage {
-//              self?.loadedImages.append(image)
-//            }
-//            group.leave()
-//          }
-//        } else {
-//          group.leave()
-//        }
-//      }
-//
-//      group.notify(queue: .main) { [weak self] in
-//        guard let self else { return }
-//        self.parent.didSelectImages(self.loadedImages)
-//        self.parent.presentationMode.wrappedValue.dismiss()
-//      }
     }
   }
 }
