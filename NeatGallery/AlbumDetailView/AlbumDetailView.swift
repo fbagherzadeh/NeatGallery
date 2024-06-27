@@ -35,9 +35,10 @@ struct AlbumDetailView: View {
           .disabled(viewModel.shouldDisableAddNewPhotos)
         }
       }
-      .alert(
-        "Photo Library access denied or restricted",
-        isPresented: $shouldShowDeniedPhotoAccessAlert
+      .customAlert(
+        isPresented: $shouldShowDeniedPhotoAccessAlert,
+        title: "Photo Library access denied or restricted!",
+        message: "To add photos to your album, please allow Photos access in the settings."
       ) {
         Button("Cancel") {}
         Button {
@@ -45,8 +46,16 @@ struct AlbumDetailView: View {
         } label: {
           Text("Settings")
         }
-      } message: {
-        Text("To add photos to your album, please allow Photos access in the settings")
+      }
+      .customAlert(
+        isPresented: $viewModel.showDeleteImportedPhotosAlert,
+        title: "Remove photos?",
+        message: "To free up storage, you can remove the imported photos from your device's Photos app."
+      ) {
+        Button("Yes", role: .destructive) {
+          viewModel.confirmDeletion()
+        }
+        Button("No", role: .cancel) {}
       }
       .sheet(isPresented: $shouldShowImagePickerSheet) {
         ImagePicker(didFinishPickingMedia: viewModel.addPickedImages(from:))

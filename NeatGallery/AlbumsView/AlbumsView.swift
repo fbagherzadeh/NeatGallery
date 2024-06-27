@@ -17,11 +17,13 @@ struct AlbumsView: View {
   var body: some View {
     NavigationStack(path: $routes) {
       contentView
-        .alert("", isPresented: $presentNameExistAlert, actions: {
+        .customAlert(
+          isPresented: $presentNameExistAlert,
+          title: "",
+          message: "This album name already exists, please try a different name."
+        ) {
           Button("Ok", role: .cancel) {}
-        }, message: {
-          Text("This album already exists")
-        })
+        }
         .alertWithTextField(
           isPresented: $presentEnterNameAlert,
           message: "Enter your new album name",

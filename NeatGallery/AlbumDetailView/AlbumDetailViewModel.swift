@@ -18,6 +18,8 @@ enum AlbumDetailViewStatus: Equatable {
 class AlbumDetailViewModel: ObservableObject {
   @Published var state: AlbumDetailViewStatus = .empty
   @Published var isAddingNewImages: Bool = false
+  @Published var showDeleteImportedPhotosAlert = false
+
   var images: [ImageModel] = []
   var shouldDisableAddNewPhotos: Bool {
     state == .loading || state == .failed
@@ -31,6 +33,7 @@ class AlbumDetailViewModel: ObservableObject {
   private let fileManager = FileManager.default
   private let tileWidth: CGFloat = 120
   private let scale: CGFloat = UIScreen.main.scale
+  private var photosToDelete: [ImageModel] = []
 
   var title: String {
     album?.name ?? ""
@@ -59,7 +62,7 @@ class AlbumDetailViewModel: ObservableObject {
       do {
         let newImageModels: [ImageModel] = try await convertToUIImageWithTaskGroup(results: pickerResults)
         newImageModels.forEach { saveImageAsJPEGToDocumentDirectory(model: $0) }
-        deletePhotos(with: newImageModels.compactMap { $0.assetIdentifier })
+        await prepareImportedPhotosForDeletion(newImageModels)
         images.insert(contentsOf: newImageModels, at: 0)
         await MainActor.run {
           state = images.isEmpty ? .empty : .loaded
@@ -70,6 +73,17 @@ class AlbumDetailViewModel: ObservableObject {
         print("Something went wrong")
       }
     }
+  }
+
+  @MainActor
+  private func prepareImportedPhotosForDeletion(_ newImageModels: [ImageModel]) {
+    photosToDelete = newImageModels
+    showDeleteImportedPhotosAlert = true
+  }
+
+  func confirmDeletion() {
+    deletePhotos(with: photosToDelete.compactMap { $0.assetIdentifier })
+    photosToDelete.removeAll()
   }
 
   private func loadResizedImages() async -> [ImageModel] {
