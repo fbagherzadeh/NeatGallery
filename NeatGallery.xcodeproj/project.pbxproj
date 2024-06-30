@@ -30,6 +30,7 @@
 		0AF9BBAE2C28DEE1001D39A8 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBAD2C28DEE1001D39A8 /* Route.swift */; };
 		0AF9BBB12C2A26EB001D39A8 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBB02C2A26EB001D39A8 /* FullScreenImageView.swift */; };
 		0AF9BBBA2C2E23C0001D39A8 /* CustomAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */; };
+		0AF9BBBD2C321902001D39A8 /* ReadSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		0AF9BBAD2C28DEE1001D39A8 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		0AF9BBB02C2A26EB001D39A8 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
 		0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertModifier.swift; sourceTree = "<group>"; };
+		0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadSizeModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 			children = (
 				0AC9B00829E3EB09001D429E /* AlertWithTextFieldModifier.swift */,
 				0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */,
+				0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				0AD863A729D934A9003FAEFC /* HomeView.swift in Sources */,
 				0AF9BBBA2C2E23C0001D39A8 /* CustomAlertModifier.swift in Sources */,
 				0A87381829F4E88A00880FFA /* UIImage+Resizing.swift in Sources */,
+				0AF9BBBD2C321902001D39A8 /* ReadSizeModifier.swift in Sources */,
 				0AD8638D29D9307F003FAEFC /* NeatGalleryApp.swift in Sources */,
 				0AC9B00929E3EB09001D429E /* AlertWithTextFieldModifier.swift in Sources */,
 				0AC9B02029E79D4D001D429E /* FileManager+getUIImagesInDirectory.swift in Sources */,
