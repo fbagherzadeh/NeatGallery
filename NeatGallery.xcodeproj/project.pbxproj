@@ -31,6 +31,7 @@
 		0AF9BBB12C2A26EB001D39A8 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBB02C2A26EB001D39A8 /* FullScreenImageView.swift */; };
 		0AF9BBBA2C2E23C0001D39A8 /* CustomAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */; };
 		0AF9BBBD2C321902001D39A8 /* ReadSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */; };
+		0AF9BBC12C328011001D39A8 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBC02C328011001D39A8 /* OrientationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		0AF9BBB02C2A26EB001D39A8 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
 		0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertModifier.swift; sourceTree = "<group>"; };
 		0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadSizeModifier.swift; sourceTree = "<group>"; };
+		0AF9BBC02C328011001D39A8 /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,12 +152,11 @@
 				0AF9BBAF2C2A26C6001D39A8 /* FullScreenImageView */,
 				0AC9B01129E51AAF001D429E /* Extensions */,
 				0AC9B00729E3EAD2001D429E /* ViewModifiers */,
+				0AF9BBBE2C327F30001D39A8 /* Utils */,
 				0AD8638C29D9307F003FAEFC /* NeatGalleryApp.swift */,
 				0AF9BBAD2C28DEE1001D39A8 /* Route.swift */,
-				0AD863A629D934A9003FAEFC /* HomeView.swift */,
-				0AB03CCE29D94D6F0095D94F /* TileImageView.swift */,
-				0AD863A429D93468003FAEFC /* ImagePicker.swift */,
 				0AD8639029D93080003FAEFC /* Assets.xcassets */,
+				0AF9BBBF2C327FCE001D39A8 /* Playground_ToBeDelete */,
 				0AD8639229D93080003FAEFC /* Preview Content */,
 			);
 			path = NeatGallery;
@@ -175,6 +176,24 @@
 				0AF9BBB02C2A26EB001D39A8 /* FullScreenImageView.swift */,
 			);
 			path = FullScreenImageView;
+			sourceTree = "<group>";
+		};
+		0AF9BBBE2C327F30001D39A8 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0AD863A429D93468003FAEFC /* ImagePicker.swift */,
+				0AF9BBC02C328011001D39A8 /* OrientationManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0AF9BBBF2C327FCE001D39A8 /* Playground_ToBeDelete */ = {
+			isa = PBXGroup;
+			children = (
+				0AB03CCE29D94D6F0095D94F /* TileImageView.swift */,
+				0AD863A629D934A9003FAEFC /* HomeView.swift */,
+			);
+			path = Playground_ToBeDelete;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +279,7 @@
 				0AC9B00C29E502AB001D429E /* AlbumsViewViewModel.swift in Sources */,
 				0AC9B01529E51BB2001D429E /* FileManager+ContentDate.swift in Sources */,
 				0AB03CCF29D94D6F0095D94F /* TileImageView.swift in Sources */,
+				0AF9BBC12C328011001D39A8 /* OrientationManager.swift in Sources */,
 				0AC9B01E29E642EB001D429E /* AlbumDetailView.swift in Sources */,
 				0AC9B01029E504FB001D429E /* AlbumTileView.swift in Sources */,
 				0AF9BBB12C2A26EB001D39A8 /* FullScreenImageView.swift in Sources */,
