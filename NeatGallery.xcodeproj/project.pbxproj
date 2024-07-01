@@ -32,6 +32,7 @@
 		0AF9BBBA2C2E23C0001D39A8 /* CustomAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */; };
 		0AF9BBBD2C321902001D39A8 /* ReadSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */; };
 		0AF9BBC12C328011001D39A8 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBC02C328011001D39A8 /* OrientationManager.swift */; };
+		0AF9BBC32C328C25001D39A8 /* ImageViewZoomPanGestureModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9BBC22C328C25001D39A8 /* ImageViewZoomPanGestureModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertModifier.swift; sourceTree = "<group>"; };
 		0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadSizeModifier.swift; sourceTree = "<group>"; };
 		0AF9BBC02C328011001D39A8 /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
+		0AF9BBC22C328C25001D39A8 /* ImageViewZoomPanGestureModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewZoomPanGestureModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				0AC9B00829E3EB09001D429E /* AlertWithTextFieldModifier.swift */,
 				0AF9BBB92C2E23C0001D39A8 /* CustomAlertModifier.swift */,
 				0AF9BBBC2C321902001D39A8 /* ReadSizeModifier.swift */,
+				0AF9BBC22C328C25001D39A8 /* ImageViewZoomPanGestureModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				0AF9BBC12C328011001D39A8 /* OrientationManager.swift in Sources */,
 				0AC9B01E29E642EB001D429E /* AlbumDetailView.swift in Sources */,
 				0AC9B01029E504FB001D429E /* AlbumTileView.swift in Sources */,
+				0AF9BBC32C328C25001D39A8 /* ImageViewZoomPanGestureModifier.swift in Sources */,
 				0AF9BBB12C2A26EB001D39A8 /* FullScreenImageView.swift in Sources */,
 				0AC9B00E29E50300001D429E /* AlbumModel.swift in Sources */,
 				0A12ADC929E9186600376513 /* FooterView.swift in Sources */,

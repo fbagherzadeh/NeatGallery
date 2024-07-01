@@ -137,7 +137,8 @@ private extension AlbumDetailView {
       FullScreenImageView(
         items: viewModel.images,
         currentIndex: $currentIndex,
-        dismissAction: { showFullScreenImageView = false }
+        dismissAction: { showFullScreenImageView = false }, 
+        onDeleteAction: { viewModel.deleteSingleImage(image: $0) }
       )
     }
   }
